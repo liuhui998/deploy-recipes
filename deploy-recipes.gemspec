@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = Deploy::Recipes::VERSION
   gem.authors       = ["liuhui"]
   gem.email         = ["liuhui998@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{ Cap recipes }
+  gem.summary       = %q{ nginx unicorn}
+  gem.homepage      = "https://github.com/liuhui998/deploy-recipes"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

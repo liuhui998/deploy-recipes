@@ -1,6 +1,8 @@
 # Deploy::Recipes
 
-TODO: Write a gem description
+Capistano and Rake tasks recipes
+
+For Nginx unicorn ...
 
 ## Installation
 
