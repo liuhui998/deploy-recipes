@@ -1,5 +1,5 @@
-
-  namespace :demrec do
+Capistrano::Configuration.instance.load do
+  namespace :deploy do
     namespace :db do
 
       desc "Backup the database"
@@ -9,4 +9,4 @@
 
     end
   end
-
+end
