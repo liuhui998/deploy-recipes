@@ -13,9 +13,19 @@ Capistrano::Configuration.instance.load do
       template "nginx_unicorn.erb", "/tmp/nginx_conf"
       run "#{sudo} mv /tmp/nginx_conf /etc/nginx/sites-enabled/#{application}"
       run "#{sudo} rm -f /etc/nginx/sites-enabled/default"
+      
+      run "mkdir -p #{shared_path}/uploads"
       restart
     end
     after "deploy:setup", "nginx:setup"
+
+    desc "Symlink the uploads directory into latest release"
+    task :symlink, roles: :app do
+      run "rm -rf  #{release_path}/public/uploads"
+      run "ln -nfs #{shared_path}/uploads #{release_path}/public/uploads"
+    end
+    
+    after "deploy:finalize_update", "nginx:symlink"
     
     %w[start stop restart].each do |command|
       desc "#{command} nginx"
