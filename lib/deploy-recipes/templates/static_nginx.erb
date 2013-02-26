@@ -1,0 +1,10 @@
+server {
+
+#  listen 8086 default deferred;
+  server_name <%= static_server_name %>;
+  root <%= current_path %>/public;
+
+#  error_page 500 502 503 504 /500.html;
+  client_max_body_size 4G;
+  keepalive_timeout 10;
+}
