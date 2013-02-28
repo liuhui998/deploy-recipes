@@ -1,4 +1,6 @@
 Capistrano::Configuration.instance.load do
+  set_default(:nginx_static_host, "")
+  
   namespace :nginx do
     desc "Install latest stable release of nginx"
     task :install, roles: :web do
@@ -13,6 +15,11 @@ Capistrano::Configuration.instance.load do
       template "nginx_unicorn.erb", "/tmp/nginx_conf"
       run "#{sudo} mv /tmp/nginx_conf /etc/nginx/sites-enabled/#{application}"
       run "#{sudo} rm -f /etc/nginx/sites-enabled/default"
+
+      if nginx_static_host.length > 0
+        template "static_nginx.erb", "/tmp/static_nginx_conf"
+        run "#{sudo} mv /tmp/static_nginx_conf /etc/nginx/sites-enabled/#{application}_static_file"
+      end
       
       run "mkdir -p #{shared_path}/uploads"
       restart
