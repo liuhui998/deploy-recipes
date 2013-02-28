@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'deploy-recipes/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "deploy-recipes"
+  gem.name          = "deploy-recipes2"
   gem.version       = Deploy::Recipes::VERSION
   gem.authors       = ["liuhui"]
   gem.email         = ["liuhui998@gmail.com"]
