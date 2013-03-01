@@ -2,19 +2,27 @@ Capistrano::Configuration.instance.load do
   set_default(:mysql_host, "localhost")
   set_default(:mysql_user) { application }
   set_default(:mysql_password) { Capistrano::CLI.password_prompt "Mysql Password: " }
+  set_default(:mysql_root_password) { Capistrano::CLI.password_prompt "Mysql Root Password: " }  
   set_default(:mysql_database) { "#{application}_production" }
 
   namespace :mysql do
     desc "Install the latest stable release of Mysql."
     task :install, roles: :db, only: {primary: true} do
-      run "#{sudo} apt-get -y install libmysql-ruby libmysqlclient-dev mysql-server mysql-client"
+      run "#{sudo} apt-get -y install libmysql-ruby libmysqlclient-dev  mysql-client"
+
+      run "#{sudo} apt-get -y install mysql-server" do |channel, stream, data|
+        # prompts for mysql root password (when blue screen appears)
+        channel.send_data("#{mysql_root_password}\n\r") if data =~ /password/
+      end      
+      
+      
     end
     after "deploy:install", "mysql:install"
 
     desc "Create a database for this application."
     task :create_database, roles: :db, only: {primary: true} do
-      run %Q{mysql -uroot -p  -e "GRANT ALL PRIVILEGES   ON #{mysql_database}.*   TO '#{mysql_user}'@'localhost'  IDENTIFIED BY '#{mysql_password}'  WITH GRANT OPTION;"}
-      run %Q{mysql -u#{mysql_user} -p#{mysql_password}  -e "create database #{mysql_database};"}      
+      run %Q{mysql -uroot -p#{mysql_root_password}  -e "GRANT ALL PRIVILEGES   ON #{mysql_database}.*   TO '#{mysql_user}'@'localhost'  IDENTIFIED BY '#{mysql_password}'  WITH GRANT OPTION;"}
+      run %Q{mysql -u#{mysql_user} -p#{mysql_password}  -e "create database IF NOT EXISTS #{mysql_database};"}      
     end
     after "deploy:setup", "mysql:create_database"
 
