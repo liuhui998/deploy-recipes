@@ -14,8 +14,10 @@ Capistrano::Configuration.instance.load do
         # prompts for mysql root password (when blue screen appears)
         channel.send_data("#{mysql_root_password}\n\r") if data =~ /password/
       end      
-      
-      
+      template "my.conf.sed", "/tmp/my.conf.sed"
+      run "sed -f /tmp/my.conf.sed /etc/mysql/my.cnf > /tmp/tmp.my.conf"
+      run "#{sudo}  mv  /tmp/tmp.my.conf  /etc/mysql/my.cnf"      
+      run "#{sudo}  service mysql restart"      
     end
     after "deploy:install", "mysql:install"
 
