@@ -20,7 +20,8 @@ if [ -d $HOME/.rbenv ]; then
   run %q{eval "$(rbenv init -)"}
   run "rbenv -v"
   run "#{sudo} apt-get -y install openssl libssl-dev  libxslt-dev sqlite3 libsqlite3-dev libmagickwand-dev  imagemagick"  
-  run %q{sed "s/sudo/sudo -p 'sudo password: '/g" $HOME/.rbenv/plugins/rbenv-installer/bin/rbenv-} + rbenv_bootstrap + " | bash"
+  run %q{sed "s/sudo/sudo -p 'sudo password: '/g" $HOME/.rbenv/plugins/rbenv-bootstrap/bin/rbenv-} + rbenv_bootstrap + " | bash"
+
   run "rbenv install #{ruby_version}"
   run "rbenv global #{ruby_version}"
   run "gem install bundler --no-ri --no-rdoc"
