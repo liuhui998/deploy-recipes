@@ -1,5 +1,6 @@
 Capistrano::Configuration.instance.load do
   set_default(:nginx_static_host, "")
+  set_default(:web_app_host, "")  
   
   namespace :nginx do
     desc "Install latest stable release of nginx"

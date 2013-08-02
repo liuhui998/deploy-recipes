@@ -3,8 +3,10 @@ upstream <%= application %>_unicorn {
 }
 
 server {
-  listen 80 default deferred;
-  # server_name example.com;
+  #listen 80 default deferred;
+  <% if web_app_host.length > 0 %>
+  server_name <%= web_app_host %>;
+  <% end %>
   root <%= current_path %>/public;
 
   location ^~ /assets/ {
@@ -13,7 +15,7 @@ server {
     add_header Cache-Control public;
   }
 
-  try_files $uri/index.html $uri @unicorn;
+  try_files $uri/index.html $uri @<%= application %>_unicorn;
   location @<%= application %>_unicorn {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;

@@ -16,6 +16,8 @@ if [ -d $HOME/.rbenv ]; then
   put bashrc, "/tmp/rbenvrc"
   run "cat /tmp/rbenvrc ~/.bashrc > ~/.bashrc.tmp"
   run "mv ~/.bashrc.tmp ~/.bashrc"
+  #sed -i 's/ftp\.ruby-lang\.org\/pub\/ruby/ruby\.taobao\.org\/mirrors\/ruby/g' 2.0.0-p0
+  # rbenv install 2.0.0-p0      
   run %q{export PATH="$HOME/.rbenv/bin:$PATH"}
   run %q{eval "$(rbenv init -)"}
   run "rbenv -v"
